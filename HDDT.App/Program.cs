@@ -28,7 +28,7 @@ namespace HDDT.App
                         {
                             // Perform the update
                             Update();
-                            Environment.Exit(0); // Exit after update
+                            Application.Exit(); // Ensure the application exits on error
                         }
                         else
                         {
@@ -46,7 +46,22 @@ namespace HDDT.App
 
             Application.Run(); // This will keep the application running  
 #else
-            Application.Run(new FormMain());
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await CheckUpdate();
+                    Application.Run(new FormMain());
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or display a message to the user
+                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit(); // Ensure the application exits on error
+                }
+            });
+
+            Application.Run(); // This will keep the application running  
 #endif
         }
 
