@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
@@ -69,6 +70,52 @@ namespace HDDT.App
             return version.ToString(); // Returns a string representation of the version
         }
 
+        private static bool IsNewVersion(string localVersion, string serverVersion)
+        {
+            (int major, int minor, int build, int revision) GetPart(string version)
+            {
+                try
+                {
+                    int major = int.Parse(version.Split('.')[0]);
+                    int minor = int.Parse(version.Split('.')[1]);
+                    int build = int.Parse(version.Split('.')[2]);
+                    int revision = int.Parse(version.Split('.')[3]);
+
+                    return (major, minor, build, revision);
+                }
+                catch
+                {
+                    throw new Exception("Invalid format of Version");
+                }
+            }
+
+
+            var local = GetPart(localVersion);
+            var server = GetPart(serverVersion);
+
+            if(local.major < server.major)
+            {
+                return true;
+            }
+
+            if (local.minor < server.minor)
+            {
+                return true;
+            }
+
+            if (local.build < server.build)
+            {
+                return true;
+            }
+
+            if (local.revision < server.revision)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         static async Task<bool> CheckUpdate()
         {
             const string versionUrl = "https://raw.githubusercontent.com/vrykolakas166/HDDT/master/Build/version.txt";
@@ -85,7 +132,14 @@ namespace HDDT.App
                 string author = ExtractAuthor();
                 string notes = ExtractNotes();
 
-                if (GetCurrentVersion() != version)
+                string major = version.Split('.')[0];
+                string minor = version.Split('.')[1];
+                string build = version.Split('.')[2];
+                string revision = version.Split('.')[3];
+
+
+
+                if (IsNewVersion(GetCurrentVersion(), version))
                 {
                     MessageBox.Show("Có phiên bản mới.", "Cập nhật", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return true;
