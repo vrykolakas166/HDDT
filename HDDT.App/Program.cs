@@ -14,20 +14,37 @@ namespace HDDT.App
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
 #if !DEBUG
+            // Run the async method to check for updates
+            RunAsync().GetAwaiter().GetResult();
+#else
 
+            try
+            {
+                Application.Run(new FormMain());
+            }
+            catch (Exception ex)
+            {
+                // Log the error or display a message to the user
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit(); // Ensure the application exits on error
+            }
+#endif
+        }
+
+        private static async Task RunAsync()
+        {
             try
             {
                 if (await CheckUpdate())
                 {
-                    // Perform the update
-                    Update();
-                    Application.Exit(); // Ensure the application exits on error
+                    Update(); // Perform the update
+                    Environment.Exit(0); // Exit after update
                 }
                 else
                 {
@@ -41,20 +58,6 @@ namespace HDDT.App
                 MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit(); // Ensure the application exits on error
             }
-#else
-
-            try
-            {
-                await CheckUpdate();
-                Application.Run(new FormMain());
-            }
-            catch (Exception ex)
-            {
-                // Log the error or display a message to the user
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit(); // Ensure the application exits on error
-            }
-#endif
         }
 
         private static string GetCurrentVersion()
