@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("HDDT.App")]
-[assembly: AssemblyCopyright("Copyright ?  2024")]
+[assembly: AssemblyCopyright("Copyright 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -28,5 +28,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.28.1")]
-[assembly: AssemblyFileVersion("1.0.28.1")]
+[assembly: AssemblyVersion("1.0.29.2")]
+[assembly: AssemblyFileVersion("1.0.29.2")]
