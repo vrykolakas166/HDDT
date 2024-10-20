@@ -14,54 +14,46 @@ namespace HDDT.App
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
 #if !DEBUG
-            _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        if (await CheckUpdate())
-                        {
-                            // Perform the update
-                            Update();
-                            Application.Exit(); // Ensure the application exits on error
-                        }
-                        else
-                        {
-                            // Start the main form if no update is needed
-                            Application.Run(new FormMain());
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Log the error or display a message to the user
-                        MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Application.Exit(); // Ensure the application exits on error
-                    }
-                });
 
-            Application.Run(); // This will keep the application running  
-#else
-            _ = Task.Run(async () =>
+            try
             {
-                try
+                if (await CheckUpdate())
                 {
-                    await CheckUpdate();
-                    Application.Run(new FormMain());
-                }
-                catch (Exception ex)
-                {
-                    // Log the error or display a message to the user
-                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Perform the update
+                    Update();
                     Application.Exit(); // Ensure the application exits on error
                 }
-            });
+                else
+                {
+                    // Start the main form if no update is needed
+                    Application.Run(new FormMain());
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error or display a message to the user
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit(); // Ensure the application exits on error
+            }
+#else
 
-            Application.Run(); // This will keep the application running  
+            try
+            {
+                await CheckUpdate();
+                Application.Run(new FormMain());
+            }
+            catch (Exception ex)
+            {
+                // Log the error or display a message to the user
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit(); // Ensure the application exits on error
+            }
 #endif
         }
 
