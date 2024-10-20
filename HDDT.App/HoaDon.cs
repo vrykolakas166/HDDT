@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HDDT.App
 {
@@ -29,6 +30,9 @@ namespace HDDT.App
             var list = JsonConvert.DeserializeObject<List<HoaDon>>(json);
 
             RemoveDot(list);
+
+            // remove item with ThanhTienChuaCoThue == null
+            list = list.Where(item => !string.IsNullOrEmpty(item.ThanhTienChuaCoThue)).ToList();
 
             return list;
         }
