@@ -132,13 +132,6 @@ namespace HDDT.App
                 string author = ExtractAuthor();
                 string notes = ExtractNotes();
 
-                string major = version.Split('.')[0];
-                string minor = version.Split('.')[1];
-                string build = version.Split('.')[2];
-                string revision = version.Split('.')[3];
-
-
-
                 if (IsNewVersion(GetCurrentVersion(), version))
                 {
                     MessageBox.Show("Có phiên bản mới.", "Cập nhật", MessageBoxButtons.OK, MessageBoxIcon.Information);
