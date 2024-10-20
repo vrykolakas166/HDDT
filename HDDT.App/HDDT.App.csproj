@@ -260,6 +260,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="update_version.ps1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -280,5 +281,8 @@
   <Import Project="..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.7.0\build\Costura.Fody.targets')" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(TargetDir)$(TargetFileName)" "$(SolutionDir)build\"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>powershell -ExecutionPolicy Bypass -File "C:\Users\hhtbb\source\repos\HDDT\HDDT.App\update_version.ps1"</PreBuildEvent>
   </PropertyGroup>
 </Project>
