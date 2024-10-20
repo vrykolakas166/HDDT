@@ -70,7 +70,14 @@ namespace HDDT.App
 
                 for (int x = 0; x < dic.Count; x++)
                 {
-                    progress.Report(Convert.ToInt32(Math.Round((x + 1) * 100.0 / dic.Count)));
+                    if (x == dic.Count - 1)
+                    {
+                        progress.Report(100);
+                    }
+                    else
+                    {
+                        progress.Report(Convert.ToInt32(Math.Round((x + 1) * 100.0 / dic.Count)));
+                    }
 
                     var shd = worksheet.Cell($"D{originalRowNumberStart}").Value.ToString();
 

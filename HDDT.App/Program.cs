@@ -19,7 +19,7 @@ namespace HDDT.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-#if !DEBUG
+#if DEBUG
             // Run the async method to check for updates
             RunAsync().GetAwaiter().GetResult();
 #else
