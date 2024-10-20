@@ -1,4 +1,4 @@
-Version: 1.0.56.2
+Version: 1.0.69.2
 Date: 2024-10-20
 Author: Phuc Pham Hong
 Notes: Updated version after build.
