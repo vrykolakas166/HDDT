@@ -1,7 +1,17 @@
-﻿namespace HDDT.App
+﻿using System;
+using System.Drawing;
+using System.Drawing.Text;
+using System.IO;
+using System.Reflection;
+
+namespace HDDT.App
 {
     partial class FormMain
     {
+        private PrivateFontCollection privateFonts = new PrivateFontCollection();
+        private FontFamily regularFontFamily;
+        private FontFamily boldFontFamily;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -28,6 +38,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            // Load the embedded fonts
+            LoadEmbeddedFonts();
+
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,7 +113,7 @@
             // tsProgress
             // 
             this.tsProgress.Name = "tsProgress";
-            this.tsProgress.Size = new System.Drawing.Size(117, 16);
+            this.tsProgress.Size = new System.Drawing.Size(150, 16);
             // 
             // tsStatus
             // 
@@ -121,13 +134,13 @@
             // 
             // btnRun
             // 
-            this.btnRun.Font = new System.Drawing.Font("SF Pro Text", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRun.Font = new System.Drawing.Font(boldFontFamily, 11.25F, FontStyle.Bold); // new System.Drawing.Font("SF Pro Text", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRun.Location = new System.Drawing.Point(13, 135);
             this.btnRun.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnRun.Name = "btnRun";
             this.btnRun.Size = new System.Drawing.Size(360, 38);
             this.btnRun.TabIndex = 2;
-            this.btnRun.Text = "Tạo tự động";
+            this.btnRun.Text = "Tạo";
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
@@ -158,7 +171,7 @@
             // 
             // txtData
             // 
-            this.txtData.Font = new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtData.Font = new System.Drawing.Font(regularFontFamily, 9.75F, FontStyle.Regular); // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtData.Location = new System.Drawing.Point(13, 27);
             this.txtData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtData.Name = "txtData";
@@ -193,7 +206,7 @@
             // 
             // txtTemplate
             // 
-            this.txtTemplate.Font = new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTemplate.Font = new System.Drawing.Font(regularFontFamily, 9.75F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTemplate.Location = new System.Drawing.Point(13, 20);
             this.txtTemplate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtTemplate.Name = "txtTemplate";
@@ -205,12 +218,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 227);
+            this.ClientSize = new System.Drawing.Size(394, 267);
+            this.MaximumSize = new System.Drawing.Size(394, 267);
+            this.MinimumSize = new System.Drawing.Size(394, 267);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Font = new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Font = new System.Drawing.Font(regularFontFamily, 8.25F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
+            this.MaximizeBox = false;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -249,6 +265,42 @@
         private System.Windows.Forms.Button btnSelectTemplate;
         private System.Windows.Forms.TextBox txtTemplate;
         private System.Windows.Forms.Button btnRun;
+
+        private void LoadEmbeddedFonts()
+        {
+            // Load regular font
+            regularFontFamily = LoadFontFromResource("HDDT.App.Fonts.SFProText-Regular.ttf");
+            // Load bold font
+            boldFontFamily = LoadFontFromResource("HDDT.App.Fonts.SFProText-Bold.ttf");
+        }
+
+        private FontFamily LoadFontFromResource(string resourceName)
+        {
+            // Get the font resource stream
+            Stream fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+
+            if (fontStream == null)
+            {
+                throw new Exception($"Could not find font resource '{resourceName}'");
+            }
+
+            // Create a byte array to hold the font data
+            byte[] fontData = new byte[fontStream.Length];
+            fontStream.Read(fontData, 0, (int)fontStream.Length);
+
+            // Allocate memory and copy the font data
+            IntPtr fontPtr = System.Runtime.InteropServices.Marshal.AllocCoTaskMem(fontData.Length);
+            System.Runtime.InteropServices.Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+
+            // Add the font to the PrivateFontCollection
+            privateFonts.AddMemoryFont(fontPtr, fontData.Length);
+
+            // Free the memory
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+
+            // Return the loaded FontFamily
+            return privateFonts.Families[privateFonts.Families.Length - 1];
+        }
     }
 }
 
