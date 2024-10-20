@@ -14,21 +14,36 @@ namespace HDDT.App
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async void Main()
+        static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (await CheckUpdate())
+            _ = Task.Run(async () =>
             {
-                // update
-                Update();
-                Environment.Exit(0);
-            }
-            else
-            {
-                Application.Run(new FormMain());
-            }
+                try
+                {
+                    if (await CheckUpdate())
+                    {
+                        // Perform the update
+                        Update();
+                        Environment.Exit(0); // Exit after update
+                    }
+                    else
+                    {
+                        // Start the main form if no update is needed
+                        Application.Run(new FormMain());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the error or display a message to the user
+                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit(); // Ensure the application exits on error
+                }
+            });
+
+            Application.Run(); // This will keep the application running
         }
 
         private static string GetCurrentVersion()
