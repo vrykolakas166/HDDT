@@ -70,7 +70,7 @@ namespace HDDT.App
 
                 for (int x = 0; x < dic.Count; x++)
                 {
-                    progress.Report(Convert.ToInt32(Math.Round(dic.Count * 100.0 / (x + 1))));
+                    progress.Report(Convert.ToInt32(Math.Round((x + 1) * 100.0 / dic.Count)));
 
                     var shd = worksheet.Cell($"D{originalRowNumberStart}").Value.ToString();
 
@@ -113,6 +113,12 @@ namespace HDDT.App
 
                         originalRowNumberStart = lastRowInserted + 1;
                     }
+                    else
+                    {
+                        originalRowNumberStart++;
+                        lastRowInserted = originalRowNumberStart;
+                    }
+
                 }
 
                 // Save to the same folder
