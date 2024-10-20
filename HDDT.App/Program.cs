@@ -20,9 +20,10 @@ namespace HDDT.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-#if !DEBUG
+#if DEBUG
             // Run the async method to check for updates
             RunAsync().GetAwaiter().GetResult();
+            Application.Run(new FormMain());
 #else
 
             try
@@ -50,7 +51,6 @@ namespace HDDT.App
                 else
                 {
                     // Start the main form if no update is needed
-                    Application.Run(new FormMain());
                 }
             }
             catch (Exception ex)
