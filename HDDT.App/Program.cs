@@ -179,7 +179,8 @@ namespace HDDT.App
 
                 // Prepare the PowerShell command with a 3-second delay, download, and launch
                 string command = $@"
-                    Start-Sleep -Seconds 5; 
+                    echo ""Updating...""
+                    Start-Sleep -Seconds 2; 
                     Invoke-WebRequest -Uri '{appUrl}' -OutFile '{outputPath}'; 
                     if (Test-Path '{outputPath}') {{ Start-Process -FilePath '{outputPath}' }} 
                     else {{ Write-Host 'Download failed. File not found.' }}";
@@ -192,7 +193,7 @@ namespace HDDT.App
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
-                    CreateNoWindow = true
+                    //CreateNoWindow = true
                 };
 
                 Process.Start(processInfo);
