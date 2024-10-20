@@ -154,7 +154,7 @@ namespace HDDT.App
                 if (ValidateInput())
                 {
                     Loading(true);
-                    tsProgress.Maximum = 100;
+                    tsProgress.Maximum = _dataFiles.Length;
                     _worker.RunWorkerAsync();
                 }
                 else

@@ -70,6 +70,8 @@ namespace HDDT.App
 
                 for (int x = 0; x < dic.Count; x++)
                 {
+                    progress.Report(Convert.ToInt32(Math.Round(dic.Count * 100.0 / (x + 1))));
+
                     var shd = worksheet.Cell($"D{originalRowNumberStart}").Value.ToString();
 
                     if (dic.TryGetValue(shd, out var dshd))
@@ -115,26 +117,6 @@ namespace HDDT.App
 
                 // Save to the same folder
                 workbook.SaveAs($"{template.Directory.FullName}\\output.xlsx");
-            }
-        }
-
-        public static void Simulate(IProgress<int> progress)
-        {
-            for (int i = 1; i <= 10; i++)
-            {
-                Task.Delay(10).Wait();
-                // Report progress
-                progress.Report(i);
-            }
-        }
-
-        public static void Simulate1(IProgress<int> progress)
-        {
-            for (int i = 1; i <= 10; i++)
-            {
-                Task.Delay(50).Wait();
-                // Report progress
-                progress.Report(i);
             }
         }
 
