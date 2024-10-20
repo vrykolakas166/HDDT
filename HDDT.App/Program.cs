@@ -19,31 +19,35 @@ namespace HDDT.App
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+#if !DEBUG
             _ = Task.Run(async () =>
-            {
-                try
                 {
-                    if (await CheckUpdate())
+                    try
                     {
-                        // Perform the update
-                        Update();
-                        Environment.Exit(0); // Exit after update
+                        if (await CheckUpdate())
+                        {
+                            // Perform the update
+                            Update();
+                            Environment.Exit(0); // Exit after update
+                        }
+                        else
+                        {
+                            // Start the main form if no update is needed
+                            Application.Run(new FormMain());
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        // Start the main form if no update is needed
-                        Application.Run(new FormMain());
+                        // Log the error or display a message to the user
+                        MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Application.Exit(); // Ensure the application exits on error
                     }
-                }
-                catch (Exception ex)
-                {
-                    // Log the error or display a message to the user
-                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit(); // Ensure the application exits on error
-                }
-            });
+                });
 
-            Application.Run(); // This will keep the application running
+            Application.Run(); // This will keep the application running  
+#else
+            Application.Run(new FormMain());
+#endif
         }
 
         private static string GetCurrentVersion()
