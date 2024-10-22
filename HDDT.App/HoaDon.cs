@@ -41,7 +41,7 @@ namespace HDDT.App
         {
             foreach (var item in list)
             {
-                item.SoLuong = item.SoLuong.Trim().Replace(".", "");
+                item.SoLuong = item.SoLuong.Trim().Replace(".", "").Replace(",", "");
                 item.DonGia = item.DonGia.Trim().Replace(".", "");
                 item.ThanhTienChuaCoThue = item.ThanhTienChuaCoThue.Trim().Replace(".", "");
             }
