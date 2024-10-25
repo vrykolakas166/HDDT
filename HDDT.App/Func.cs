@@ -1,8 +1,12 @@
 ﻿using ClosedXML.Excel;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HDDT.App
 {
@@ -159,13 +163,66 @@ namespace HDDT.App
                     Number = temp[2],
                     Date = temp[3],
                     Information = temp[4]
-                };                    
+                };
 
                 var hd = HoaDon.GetListFromJson(File.ReadAllText(item.FullName));
                 dic.Add(invoice, hd);
             }
 
             return dic;
+        }
+
+        public static async Task DownloadExtensionAsync()
+        {
+            // Show folder browser dialog
+            using (var folderBrowser = new FolderBrowserDialog())
+            {
+                folderBrowser.Description = "Select a folder to save the files:";
+                if (folderBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedPath = folderBrowser.SelectedPath;
+                    string folderPath = Path.Combine(selectedPath, "HDDTDataExtension");
+                    if (Directory.Exists(folderPath))
+                    {
+                        Directory.Delete(folderPath, true);
+                    }
+
+                    Directory.CreateDirectory(folderPath);
+
+                    // Call the download method with the selected path
+                    HttpClient client = new HttpClient();
+
+                    var owner = "vrykolakas166";
+                    var repo = "HDDT";
+                    var path = "Build/HDDTData";
+                    var branch = "master";
+
+                    string url = $"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={branch}";
+
+                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HDDT.App", Program.GetCurrentVersion()));
+
+                    var response = await client.GetStringAsync(url);
+                    var files = JArray.Parse(response);
+
+                    foreach (var file in files)
+                    {
+                        var fileName = file["name"].ToString();
+                        var downloadUrl = file["download_url"]?.ToString();
+                        if (downloadUrl != null)
+                        {
+                            var fileContent = await client.GetStringAsync(downloadUrl);
+                            File.WriteAllText(Path.Combine(folderPath, fileName), fileContent);
+                            Console.WriteLine($"Downloaded: {fileName}");
+                            MessageBox.Show("Tải công cụ thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MyLogger.Error("In DownloadExtensionAsync where downloadUrl = null");
+                            MessageBox.Show($"Tải công cụ thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
         }
     }
 }

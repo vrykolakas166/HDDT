@@ -55,6 +55,8 @@ namespace HDDT.App
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSelectTemplate = new System.Windows.Forms.Button();
             this.txtTemplate = new System.Windows.Forms.TextBox();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -78,6 +80,7 @@ namespace HDDT.App
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
@@ -86,7 +89,7 @@ namespace HDDT.App
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Thoát";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -109,7 +112,7 @@ namespace HDDT.App
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsProgress,
             this.tsStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 206);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 225);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             this.statusStrip1.Size = new System.Drawing.Size(378, 22);
@@ -131,11 +134,10 @@ namespace HDDT.App
             this.panel1.Controls.Add(this.btnRun);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Location = new System.Drawing.Point(0, 40);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(378, 182);
+            this.panel1.Size = new System.Drawing.Size(378, 184);
             this.panel1.TabIndex = 2;
             // 
             // btnRun
@@ -220,11 +222,28 @@ namespace HDDT.App
             this.txtTemplate.Size = new System.Drawing.Size(264, 23);
             this.txtTemplate.TabIndex = 0;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblVersion.Location = new System.Drawing.Point(0, 24);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(378, 13);
+            this.lblVersion.TabIndex = 3;
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // toolToolStripMenuItem
+            // 
+            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toolToolStripMenuItem.Text = "Công cụ";
+            this.toolToolStripMenuItem.Click += new System.EventHandler(this.toolToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 228);
+            this.ClientSize = new System.Drawing.Size(378, 247);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -233,8 +252,8 @@ namespace HDDT.App
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(394, 267);
-            this.MinimumSize = new System.Drawing.Size(394, 267);
+            this.MaximumSize = new System.Drawing.Size(394, 286);
+            this.MinimumSize = new System.Drawing.Size(394, 286);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tự động tạo hóa đơn";
@@ -308,6 +327,8 @@ namespace HDDT.App
         }
 
         private System.Windows.Forms.ToolStripMenuItem reportErrorToolStripMenuItem;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
     }
 }
 

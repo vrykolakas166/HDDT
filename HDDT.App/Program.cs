@@ -61,7 +61,7 @@ namespace HDDT.App
             }
         }
 
-        private static string GetCurrentVersion()
+        public static string GetCurrentVersion()
         {
             // Get the current assembly
             var assembly = Assembly.GetExecutingAssembly();
@@ -93,7 +93,7 @@ namespace HDDT.App
             var local = GetPart(localVersion);
             var server = GetPart(serverVersion);
 
-            if(local.major < server.major)
+            if (local.major < server.major)
             {
                 return true;
             }

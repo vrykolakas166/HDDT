@@ -119,7 +119,7 @@ namespace HDDT.App
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-
+            lblVersion.Text = $"Phiên bản: {Program.GetCurrentVersion()}";
         }
 
         private void btnSelectTemplate_Click(object sender, EventArgs e)
@@ -160,6 +160,13 @@ namespace HDDT.App
                     txtData.Text = string.Join("; ", _dataFiles.Select(x => x.Name).ToArray());
                 }
             }
+        }
+
+        private async void toolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Loading(true);
+            await Func.DownloadExtensionAsync();
+            Loading(false);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
