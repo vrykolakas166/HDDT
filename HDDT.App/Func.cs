@@ -174,54 +174,65 @@ namespace HDDT.App
 
         public static async Task DownloadExtensionAsync()
         {
-            // Show folder browser dialog
-            using (var folderBrowser = new FolderBrowserDialog())
+
+            try
             {
-                folderBrowser.Description = "Select a folder to save the files:";
-                if (folderBrowser.ShowDialog() == DialogResult.OK)
+                // Show folder browser dialog
+                using (var folderBrowser = new FolderBrowserDialog())
                 {
-                    string selectedPath = folderBrowser.SelectedPath;
-                    string folderPath = Path.Combine(selectedPath, "HDDTDataExtension");
-                    if (Directory.Exists(folderPath))
+                    folderBrowser.Description = "Select a folder to save the files:";
+                    if (folderBrowser.ShowDialog() == DialogResult.OK)
                     {
-                        Directory.Delete(folderPath, true);
+                        string selectedPath = folderBrowser.SelectedPath;
+                        string folderPath = Path.Combine(selectedPath, "HDDTDataExtension");
+
+                        if (Directory.Exists(folderPath))
+                        {
+                            Directory.Delete(folderPath, true);
+                        }
+
+                        Directory.CreateDirectory(folderPath);
+
+                        // Call the download method with the selected path
+                        HttpClient client = new HttpClient();
+
+                        var owner = "vrykolakas166";
+                        var repo = "HDDT";
+                        var path = "Build/HDDTData";
+                        var branch = "master";
+
+                        string url = $"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={branch}";
+
+                        client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HDDT.App", Program.GetCurrentVersion()));
+
+                        var response = await client.GetStringAsync(url);
+                        var files = JArray.Parse(response);
+
+                        foreach (var file in files)
+                        {
+                            var fileName = file["name"].ToString();
+                            var downloadUrl = file["download_url"]?.ToString();
+                            if (downloadUrl != null)
+                            {
+                                var fileContent = await client.GetStringAsync(downloadUrl);
+                                File.WriteAllText(Path.Combine(folderPath, fileName), fileContent);
+                            }
+                            else
+                            {
+                                MyLogger.Error($"In DownloadExtensionAsync where fileName = {fileName} && downloadUrl = {downloadUrl}");
+                            }
+                        }
+
+                        MessageBox.Show("Tải công cụ thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                    Directory.CreateDirectory(folderPath);
-
-                    // Call the download method with the selected path
-                    HttpClient client = new HttpClient();
-
-                    var owner = "vrykolakas166";
-                    var repo = "HDDT";
-                    var path = "Build/HDDTData";
-                    var branch = "master";
-
-                    string url = $"https://api.github.com/repos/{owner}/{repo}/contents/{path}?ref={branch}";
-
-                    client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("HDDT.App", Program.GetCurrentVersion()));
-
-                    var response = await client.GetStringAsync(url);
-                    var files = JArray.Parse(response);
-
-                    foreach (var file in files)
-                    {
-                        var fileName = file["name"].ToString();
-                        var downloadUrl = file["download_url"]?.ToString();
-                        if (downloadUrl != null)
-                        {
-                            var fileContent = await client.GetStringAsync(downloadUrl);
-                            File.WriteAllText(Path.Combine(folderPath, fileName), fileContent);
-                            Console.WriteLine($"Downloaded: {fileName}");
-                            MessageBox.Show("Tải công cụ thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MyLogger.Error("In DownloadExtensionAsync where downloadUrl = null");
-                            MessageBox.Show($"Tải công cụ thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Tải công cụ thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MyLogger.Error(ex.Message);
             }
         }
     }
