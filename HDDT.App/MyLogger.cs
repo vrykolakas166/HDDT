@@ -21,13 +21,13 @@ namespace HDDT.App
         /// <summary>
         /// https://app.elasticemail.com/marketing/logs/email
         /// </summary>
-        public static async Task SendLogFileByEmail()
+        public static async Task SendLogFileByEmail(Form parent = null)
         {
             try
             {
                 if (!File.Exists(_filePath))
                 {
-                    MessageBox.Show("Ứng dụng có lỗi đ đâu mà báo.", "HEHE", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    using (new CenterWinDialog(parent)) MessageBox.Show("Ứng dụng có lỗi đ đâu mà báo.", "HEHE", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -62,11 +62,11 @@ namespace HDDT.App
 
                 // Send the email
                 await smtpClient.SendMailAsync(mail);
-                MessageBox.Show("Báo lỗi thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                using (new CenterWinDialog(parent)) MessageBox.Show("Báo lỗi thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Báo lỗi thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (new CenterWinDialog(parent)) MessageBox.Show($"Báo lỗi thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Error(ex.Message);
             }
         }

@@ -57,7 +57,7 @@ namespace HDDT.App
             if (e.Error != null)
             {
                 MyLogger.Error(e.Error.Message);
-                MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi chưa xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (new CenterWinDialog(this)) MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi chưa xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tsStatus.Text = "Thất bại !";
             }
             else if (e.Cancelled)
@@ -83,7 +83,7 @@ namespace HDDT.App
 
                 Func.Open(_templateFile, _dataFiles, progress);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 e.Result = ex;
                 e.Cancel = true;
@@ -165,7 +165,7 @@ namespace HDDT.App
         private async void toolToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Loading(true);
-            await Func.DownloadExtensionAsync();
+            await Func.DownloadExtensionAsync(this);
             Loading(false);
         }
 
@@ -177,13 +177,13 @@ namespace HDDT.App
         private async void reportErrorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Loading(true);
-            await MyLogger.SendLogFileByEmail();
+            await MyLogger.SendLogFileByEmail(this);
             Loading(false);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("From your boyfriend with love.\n\n\t\tCopyright © 2024", "love you ttd.19", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (new CenterWinDialog(this)) MessageBox.Show("From your boyfriend with love.\n\n\t\tCopyright © 2024", "love you ttd.19", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -203,7 +203,7 @@ namespace HDDT.App
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi không xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (new CenterWinDialog(this)) MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi không xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MyLogger.Error(ex.Message);
             }
         }

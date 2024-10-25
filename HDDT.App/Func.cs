@@ -172,7 +172,7 @@ namespace HDDT.App
             return dic;
         }
 
-        public static async Task DownloadExtensionAsync()
+        public static async Task DownloadExtensionAsync(Form parent = null)
         {
 
             try
@@ -223,7 +223,7 @@ namespace HDDT.App
                             }
                         }
 
-                        MessageBox.Show("Tải công cụ thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        using (new CenterWinDialog(parent)) MessageBox.Show("Tải công cụ thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                 }
@@ -231,7 +231,7 @@ namespace HDDT.App
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Tải công cụ thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (new CenterWinDialog(parent)) MessageBox.Show($"Tải công cụ thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 MyLogger.Error(ex.Message);
             }
         }
