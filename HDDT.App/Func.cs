@@ -62,7 +62,7 @@ namespace HDDT.App
                 // so hoa don: column D
 
                 // so hoa don - danh sach 
-                Dictionary<string, List<HoaDon>> dic = GetHD(data);
+                Dictionary<Invoice, List<HoaDon>> dic = GetHD(data);
 
                 // Specify the row you want to copy
                 int originalRowNumberStart = 7;
@@ -79,9 +79,21 @@ namespace HDDT.App
                         progress.Report(Convert.ToInt32(Math.Round((x + 1) * 100.0 / dic.Count)));
                     }
 
-                    var shd = worksheet.Cell($"D{originalRowNumberStart}").Value.ToString();
+                    // c,d,e,f
+                    //var symbol = worksheet.Cell($"C{originalRowNumberStart}").Value.ToString();
+                    //var number = worksheet.Cell($"D{originalRowNumberStart}").Value.ToString();
+                    //var date = worksheet.Cell($"E{originalRowNumberStart}").Value.ToString();
+                    //var mst = worksheet.Cell($"F{originalRowNumberStart}").Value.ToString();
 
-                    if (dic.TryGetValue(shd, out var dshd))
+                    var invoice = new Invoice()
+                    {
+                        Symbol = worksheet.Cell($"C{originalRowNumberStart}").Value.ToString().Trim(),
+                        Number = worksheet.Cell($"D{originalRowNumberStart}").Value.ToString().Trim(),
+                        Date = worksheet.Cell($"E{originalRowNumberStart}").Value.ToString().Trim().Replace("/", ""),
+                        Information = worksheet.Cell($"F{originalRowNumberStart}").Value.ToString().Trim(),
+                    };
+
+                    if (dic.TryGetValue(invoice, out var dshd))
                     {
                         for (int i = 0; i < dshd.Count; i++)
                         {
@@ -133,16 +145,24 @@ namespace HDDT.App
             }
         }
 
-        private static Dictionary<string, List<HoaDon>> GetHD(FileInfo[] data)
+        private static Dictionary<Invoice, List<HoaDon>> GetHD(FileInfo[] data)
         {
-            Dictionary<string, List<HoaDon>> dic = new Dictionary<string, List<HoaDon>>();
+            Dictionary<Invoice, List<HoaDon>> dic = new Dictionary<Invoice, List<HoaDon>>();
             foreach (var item in data)
             {
                 var temp = item.Name.Replace(item.Extension, "").Split('_');
-                var shd = temp[temp.Length - 1];
+                // data_null_null_null_null
+                // data_symbol_number_date_info
+                var invoice = new Invoice()
+                {
+                    Symbol = temp[1],
+                    Number = temp[2],
+                    Date = temp[3],
+                    Information = temp[4]
+                };                    
 
                 var hd = HoaDon.GetListFromJson(File.ReadAllText(item.FullName));
-                dic.Add(shd, hd);
+                dic.Add(invoice, hd);
             }
 
             return dic;

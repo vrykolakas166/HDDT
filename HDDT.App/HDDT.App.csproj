@@ -235,6 +235,7 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Func.cs" />
+    <Compile Include="Invoice.cs" />
     <Compile Include="HoaDon.cs" />
     <Compile Include="MyLogger.cs" />
     <Compile Include="Program.cs" />
