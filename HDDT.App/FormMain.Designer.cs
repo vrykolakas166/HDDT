@@ -38,13 +38,11 @@ namespace HDDT.App
         /// </summary>
         private void InitializeComponent()
         {
-            // Load the embedded fonts
-            LoadEmbeddedFonts();
-
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
@@ -68,11 +66,12 @@ namespace HDDT.App
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
+            this.reportErrorToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(394, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(378, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -91,6 +90,13 @@ namespace HDDT.App
             this.exitToolStripMenuItem.Text = "Thoát";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // reportErrorToolStripMenuItem
+            // 
+            this.reportErrorToolStripMenuItem.Name = "reportErrorToolStripMenuItem";
+            this.reportErrorToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.reportErrorToolStripMenuItem.Text = "Báo lỗi";
+            this.reportErrorToolStripMenuItem.Click += new System.EventHandler(this.reportErrorToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -103,10 +109,10 @@ namespace HDDT.App
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsProgress,
             this.tsStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 205);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 206);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(394, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(378, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -129,12 +135,12 @@ namespace HDDT.App
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(394, 181);
+            this.panel1.Size = new System.Drawing.Size(378, 182);
             this.panel1.TabIndex = 2;
             // 
             // btnRun
             // 
-            this.btnRun.Font = new System.Drawing.Font(boldFontFamily, 11.25F, FontStyle.Bold); // new System.Drawing.Font("SF Pro Text", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRun.Font = new System.Drawing.Font("SF Pro Text", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRun.Location = new System.Drawing.Point(13, 135);
             this.btnRun.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnRun.Name = "btnRun";
@@ -153,7 +159,7 @@ namespace HDDT.App
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox2.Size = new System.Drawing.Size(394, 69);
+            this.groupBox2.Size = new System.Drawing.Size(378, 69);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Danh sách của từng hóa đơn";
@@ -171,7 +177,7 @@ namespace HDDT.App
             // 
             // txtData
             // 
-            this.txtData.Font = new System.Drawing.Font(regularFontFamily, 9.75F, FontStyle.Regular); // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtData.Font = new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtData.Location = new System.Drawing.Point(13, 27);
             this.txtData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtData.Name = "txtData";
@@ -188,7 +194,7 @@ namespace HDDT.App
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Size = new System.Drawing.Size(394, 60);
+            this.groupBox1.Size = new System.Drawing.Size(378, 60);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Danh sách hóa đơn mẫu";
@@ -206,7 +212,7 @@ namespace HDDT.App
             // 
             // txtTemplate
             // 
-            this.txtTemplate.Font = new System.Drawing.Font(regularFontFamily, 9.75F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTemplate.Font = new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTemplate.Location = new System.Drawing.Point(13, 20);
             this.txtTemplate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.txtTemplate.Name = "txtTemplate";
@@ -218,18 +224,17 @@ namespace HDDT.App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 267);
-            this.MaximumSize = new System.Drawing.Size(394, 267);
-            this.MinimumSize = new System.Drawing.Size(394, 267);
+            this.ClientSize = new System.Drawing.Size(378, 228);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
-            this.Font = new System.Drawing.Font(regularFontFamily, 8.25F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-            this.MaximizeBox = false;
+            this.Font = new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(394, 267);
+            this.MinimumSize = new System.Drawing.Size(394, 267);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tự động tạo hóa đơn";
@@ -301,6 +306,8 @@ namespace HDDT.App
             // Return the loaded FontFamily
             return privateFonts.Families[privateFonts.Families.Length - 1];
         }
+
+        private System.Windows.Forms.ToolStripMenuItem reportErrorToolStripMenuItem;
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,7 +16,9 @@ namespace HDDT.App
 
         public FormMain()
         {
+            LoadEmbeddedFonts();
             InitializeComponent();
+            ApplyEmbeddedFonts();
 
             _worker = new BackgroundWorker
             {
@@ -51,19 +54,41 @@ namespace HDDT.App
 
         private void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            tsStatus.Text = "Hoàn thành !";
+            if (e.Error != null)
+            {
+                MyLogger.Error(e.Error.Message);
+                MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi chưa xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tsStatus.Text = "Thất bại !";
+            }
+            else if (e.Cancelled)
+            {
+                // operation is cancelled
+            }
+            else
+            {
+                tsStatus.Text = "Hoàn thành !";
+            }
             Loading(false);
         }
 
         private void _worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var progress = new Progress<int>(percent =>
+            try
             {
-                // Report progress to the BackgroundWorker
-                _worker.ReportProgress(percent);
-            });
+                var progress = new Progress<int>(percent =>
+                {
+                    // Report progress to the BackgroundWorker
+                    _worker.ReportProgress(percent);
+                });
 
-            Func.Open(_templateFile, _dataFiles, progress);
+                Func.Open(_templateFile, _dataFiles, progress);
+            }
+            catch(Exception ex)
+            {
+                e.Result = ex;
+                e.Cancel = true;
+                throw;
+            }
         }
 
         private void Loading(bool con)
@@ -142,6 +167,13 @@ namespace HDDT.App
             Close();
         }
 
+        private async void reportErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Loading(true);
+            await MyLogger.SendLogFileByEmail();
+            Loading(false);
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("From your boyfriend with love.\n\n\t\tCopyright © 2024", "love you ttd.19", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -165,12 +197,7 @@ namespace HDDT.App
             catch (Exception ex)
             {
                 MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi không xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Get the path to the folder where the application is running
-                string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                // Create the file path by appending the file name
-                string filePath = Path.Combine(appDirectory, "last_error.txt");
-                // Write to the file
-                File.WriteAllText(filePath, ex.Message);
+                MyLogger.Error(ex.Message);
             }
         }
 
@@ -187,6 +214,14 @@ namespace HDDT.App
             }
 
             return true;
+        }
+
+        private void ApplyEmbeddedFonts()
+        {
+            btnRun.Font = new Font(boldFontFamily, 11.25F, FontStyle.Bold); // new System.Drawing.Font("SF Pro Text", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            txtData.Font = new Font(regularFontFamily, 9.75F, FontStyle.Regular); // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            txtTemplate.Font = new Font(regularFontFamily, 9.75F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            Font = new Font(regularFontFamily, 8.25F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         }
     }
 }

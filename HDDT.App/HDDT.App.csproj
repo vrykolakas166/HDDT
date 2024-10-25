@@ -236,6 +236,7 @@
     </Compile>
     <Compile Include="Func.cs" />
     <Compile Include="HoaDon.cs" />
+    <Compile Include="MyLogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMain.resx">
