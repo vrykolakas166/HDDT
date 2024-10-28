@@ -140,6 +140,21 @@ function startClicking() {
     return value === null || value.trim() === "" ? null : value;
   }
 
+  function getMST(value) {
+    const regex = /(\d+)/g; // Use the global flag to find all matches
+
+    const matches = value.match(regex);
+
+    if (matches) {
+      const longestMatch = matches.reduce((a, b) =>
+        a.length > b.length ? a : b
+      );
+      return longestMatch; // Output: 0100736347 or 678910, whichever is longer
+    } else {
+      return null;
+    }
+  }
+
   // Function to click each row
   function clickRow() {
     const rows = document.querySelectorAll(".ant-table-tbody tr");
@@ -166,12 +181,7 @@ function startClicking() {
       const invoiceDate = getDefaultValue(
         invoiceDateCell.textContent.replaceAll("/", "")
       );
-      const mst = getDefaultValue(
-        mstCell.textContent
-          .split("Tên người mua")[0]
-          .replace("MST người mua: ", "")
-          .trim()
-      );
+      const mst = getMST(mstCell.textContent.trim());
 
       let fileName = `data_${invoiceSymbol}_${invoiceNumber}_${invoiceDate}_${mst}`;
 
