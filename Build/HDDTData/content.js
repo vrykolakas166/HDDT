@@ -104,122 +104,126 @@ function getNextPageButton() {
 
 // Function to start clicking rows
 function startClicking() {
-  // check page
-  checkActiveTab();
-  getCurrentPages();
+  try {
+    // check page
+    checkActiveTab();
+    getCurrentPages();
 
-  function clickNextPage() {
-    if (currentPage < lastPage) {
-      // get next button
-      const icons = document.querySelectorAll(".anticon.anticon-right");
-      let icon;
-      if (isFirstTab()) {
-        icon = icons[1];
-      } else {
-        icon = icons[3];
-      }
-      if (icon) {
-        const buttonNext = icon.closest("button");
-        buttonNext.click();
-        notify(`Sang trang ${currentPage + 1}...`);
-
-        // start again if new page, after 3 seconds for loading new
-        setTimeout(() => {
-          currentPage += 1;
-          currentIndex = 0;
-          clickRow();
-        }, 3000);
-      }
-    } else {
-      notify("finished");
-      console.log("Done.");
-    }
-  }
-
-  function getDefaultValue(value) {
-    return value === null || value.trim() === "" ? null : value;
-  }
-
-  function getMST(value) {
-    const regex = /(\d+)/g; // Use the global flag to find all matches
-
-    const matches = value.match(regex);
-
-    if (matches) {
-      const longestMatch = matches.reduce((a, b) =>
-        a.length > b.length ? a : b
-      );
-      return longestMatch; // Output: 0100736347 or 678910, whichever is longer
-    } else {
-      return null;
-    }
-  }
-
-  // Function to click each row
-  function clickRow() {
-    const rows = document.querySelectorAll(".ant-table-tbody tr");
-    const rowCount = rows.length;
-
-    if (rowCount === 0) {
-      console.log("No rows found.");
-      notify("nodata");
-      return;
-    }
-
-    if (currentIndex < rowCount) {
-      notify(`[Trang ${currentPage}] STT: ${currentIndex + 1}`);
-      const row = rows[currentIndex];
-
-      // Find the cell containing "Số hóa đơn"
-      const invoiceSymbolCell = row.querySelector("td:nth-child(3)");
-      const invoiceNumberCell = row.querySelector("td:nth-child(4)");
-      const invoiceDateCell = row.querySelector("td:nth-child(5)");
-      const mstCell = row.querySelector("td:nth-child(6)");
-
-      const invoiceSymbol = getDefaultValue(invoiceSymbolCell.textContent);
-      const invoiceNumber = getDefaultValue(invoiceNumberCell.textContent);
-      const invoiceDate = getDefaultValue(
-        invoiceDateCell.textContent.replaceAll("/", "")
-      );
-      const mst = getMST(mstCell.textContent.trim());
-
-      let fileName = `data_${invoiceSymbol}_${invoiceNumber}_${invoiceDate}_${mst}`;
-
-      row.click(); // Simulate click on the row
-      console.log(`Clicked row ${currentIndex + 1}`);
-
-      // Wait for 1 second before clicking
-      setTimeout(() => {
-        const clipPath = document.querySelector(
-          "clipPath#clip-icon_xemchitiet"
-        );
-
-        if (clipPath) {
-          const button = clipPath.closest("button");
-          button.click();
+    function clickNextPage() {
+      if (currentPage < lastPage) {
+        // get next button
+        const icons = document.querySelectorAll(".anticon.anticon-right");
+        let icon;
+        if (isFirstTab()) {
+          icon = icons[1];
+        } else {
+          icon = icons[3];
         }
-      }, 1000); // Delay of 1000 milliseconds
+        if (icon) {
+          const buttonNext = icon.closest("button");
+          buttonNext.click();
+          notify(`Sang trang ${currentPage + 1}...`);
 
-      waitForElement(".ant-modal-close-x", (closeButton) => {
-        setTimeout(() => {
-          // You can proceed with your actions here
-          exportTableToJSON(`${fileName}.json`);
-          closeButton.click(); // Click the close button
-
-          // Now call clickRow for the next index
-          clickRow();
-        }, 1000); // Delay before clicking the close button
-      });
-
-      currentIndex++;
-    } else {
-      console.log("Ready to next page");
-      // click if there is next page
-      clickNextPage();
+          // start again if new page, after 3 seconds for loading new
+          setTimeout(() => {
+            currentPage += 1;
+            currentIndex = 0;
+            clickRow();
+          }, 3000);
+        }
+      } else {
+        notify("finished");
+        console.log("Done.");
+      }
     }
-  }
 
-  clickRow();
+    function getDefaultValue(value) {
+      return value === null || value.trim() === "" ? null : value;
+    }
+
+    function getMST(value) {
+      const regex = /(\d+)/g; // Use the global flag to find all matches
+
+      const matches = value.match(regex);
+
+      if (matches) {
+        const longestMatch = matches.reduce((a, b) =>
+          a.length > b.length ? a : b
+        );
+        return longestMatch; // Output: 0100736347 or 678910, whichever is longer
+      } else {
+        return null;
+      }
+    }
+
+    // Function to click each row
+    function clickRow() {
+      const rows = document.querySelectorAll(".ant-table-tbody tr");
+      const rowCount = rows.length;
+
+      if (rowCount === 0) {
+        console.log("No rows found.");
+        notify("nodata");
+        return;
+      }
+
+      if (currentIndex < rowCount) {
+        notify(`[Trang ${currentPage}] STT: ${currentIndex + 1}`);
+        const row = rows[currentIndex];
+
+        // Find the cell containing "Số hóa đơn"
+        const invoiceSymbolCell = row.querySelector("td:nth-child(3)");
+        const invoiceNumberCell = row.querySelector("td:nth-child(4)");
+        const invoiceDateCell = row.querySelector("td:nth-child(5)");
+        const mstCell = row.querySelector("td:nth-child(6)");
+
+        const invoiceSymbol = getDefaultValue(invoiceSymbolCell.textContent);
+        const invoiceNumber = getDefaultValue(invoiceNumberCell.textContent);
+        const invoiceDate = getDefaultValue(
+          invoiceDateCell.textContent.replaceAll("/", "")
+        );
+        const mst = getMST(mstCell.textContent.trim());
+
+        let fileName = `data_${invoiceSymbol}_${invoiceNumber}_${invoiceDate}_${mst}`;
+
+        row.click(); // Simulate click on the row
+        console.log(`Clicked row ${currentIndex + 1}`);
+
+        // Wait for 1 second before clicking
+        setTimeout(() => {
+          const clipPath = document.querySelector(
+            "clipPath#clip-icon_xemchitiet"
+          );
+
+          if (clipPath) {
+            const button = clipPath.closest("button");
+            button.click();
+          }
+        }, 1000); // Delay of 1000 milliseconds
+
+        waitForElement(".ant-modal-close-x", (closeButton) => {
+          setTimeout(() => {
+            // You can proceed with your actions here
+            exportTableToJSON(`${fileName}.json`);
+            closeButton.click(); // Click the close button
+
+            // Now call clickRow for the next index
+            clickRow();
+          }, 1000); // Delay before clicking the close button
+        });
+
+        currentIndex++;
+      } else {
+        console.log("Ready to next page");
+        // click if there is next page
+        clickNextPage();
+      }
+    }
+
+    clickRow();
+  } catch {
+    notify("finished");
+  }
 }
 
 function notify(val) {
