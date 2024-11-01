@@ -117,7 +117,7 @@ namespace HDDT.App
             return false;
         }
 
-        static async Task<bool> CheckUpdate()
+        public static async Task<bool> CheckUpdate()
         {
             const string versionUrl = "https://raw.githubusercontent.com/vrykolakas166/HDDT/master/Build/version.txt";
             string versionInfo;

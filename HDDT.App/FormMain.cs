@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HDDT.App
@@ -11,8 +14,10 @@ namespace HDDT.App
     {
         private FileInfo _templateFile;
         private FileInfo[] _dataFiles = { };
+        private FormNotification _formNotification;
 
         private readonly BackgroundWorker _worker;
+        private readonly Thread _silentThread;
 
         public FormMain()
         {
@@ -29,6 +34,8 @@ namespace HDDT.App
             _worker.DoWork += _worker_DoWork;
             _worker.RunWorkerCompleted += _worker_RunWorkerCompleted;
             _worker.ProgressChanged += _worker_ProgressChanged;
+
+            _silentThread = new Thread(RunNotificationHub);
         }
 
         private void _worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -119,6 +126,8 @@ namespace HDDT.App
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            _silentThread.Start();
+            _formNotification = new FormNotification(this);
             lblVersion.Text = $"Phiên bản: {Program.GetCurrentVersion()}";
         }
 
@@ -240,17 +249,53 @@ namespace HDDT.App
             Font = new Font(regularFontFamily, 8.25F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         }
 
+        private async void RunNotificationHub()
+        {
+            while (true)
+            {
+                // check update
+                var newUpdate = await Program.CheckUpdate();
+
+                // notify
+                if (newUpdate)
+                {
+                    btnNotification.Invoke((MethodInvoker)delegate
+                    {
+                        btnNotification.BackgroundImage = Properties.Resources.bell_new;
+                    });
+                    _formNotification.Notification = new ThongBao()
+                    {
+                        Content = "Có phiên bản mới.",
+                    };
+                    break; // end thread
+                }
+
+                Debug.WriteLine("slient thread's running...");
+                Thread.Sleep(5 * 60 * 1000); // 5 mins
+            }
+        }
+
         protected override void OnClosed(EventArgs e)
         {
             try
             {
+                if (_silentThread.IsAlive)
+                {
+                    _silentThread.Abort();
+                }
                 if (File.Exists(Path.GetTempPath() + "hddt_error.txt"))
                 {
                     File.Delete(Path.GetTempPath() + "hddt_error.txt");
                 }
             }
-            catch{ }
+            catch { }
             base.OnClosed(e);
+        }
+
+        private void btnNotification_Click(object sender, EventArgs e)
+        {
+            this.btnNotification.BackgroundImage = Properties.Resources.bell;
+            _formNotification.Show();
         }
     }
 }

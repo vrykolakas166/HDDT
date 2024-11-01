@@ -42,6 +42,7 @@ namespace HDDT.App
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,12 +58,13 @@ namespace HDDT.App
             this.btnSelectTemplate = new System.Windows.Forms.Button();
             this.txtTemplate = new System.Windows.Forms.TextBox();
             this.lblVersion = new System.Windows.Forms.Label();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnNotification = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnNotification)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -91,14 +93,19 @@ namespace HDDT.App
             // toolToolStripMenuItem
             // 
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-            this.toolToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.toolToolStripMenuItem.Text = "Tải tiện ích";
             this.toolToolStripMenuItem.Click += new System.EventHandler(this.toolToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(128, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.exitToolStripMenuItem.Text = "Thoát";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -147,7 +154,7 @@ namespace HDDT.App
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(338, 201);
+            this.panel1.Size = new System.Drawing.Size(338, 188);
             this.panel1.TabIndex = 2;
             // 
             // btnRun
@@ -243,20 +250,29 @@ namespace HDDT.App
             this.lblVersion.TabIndex = 3;
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // toolStripSeparator1
+            // btnNotification
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.btnNotification.BackgroundImage = global::HDDT.App.Properties.Resources.bell_new;
+            this.btnNotification.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnNotification.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNotification.Location = new System.Drawing.Point(3, 203);
+            this.btnNotification.Name = "btnNotification";
+            this.btnNotification.Size = new System.Drawing.Size(20, 20);
+            this.btnNotification.TabIndex = 4;
+            this.btnNotification.TabStop = false;
+            this.btnNotification.Click += new System.EventHandler(this.btnNotification_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(338, 247);
-            this.Controls.Add(this.lblVersion);
+            this.Controls.Add(this.btnNotification);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Font = new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -278,6 +294,7 @@ namespace HDDT.App
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnNotification)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,6 +358,7 @@ namespace HDDT.App
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.PictureBox btnNotification;
     }
 }
 
