@@ -1,12 +1,10 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HDDT.App
 {

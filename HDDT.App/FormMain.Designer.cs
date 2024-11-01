@@ -252,7 +252,7 @@ namespace HDDT.App
             // 
             // btnNotification
             // 
-            this.btnNotification.BackgroundImage = global::HDDT.App.Properties.Resources.bell_new;
+            this.btnNotification.BackgroundImage = global::HDDT.App.Properties.Resources.bell;
             this.btnNotification.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnNotification.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNotification.Location = new System.Drawing.Point(3, 203);
