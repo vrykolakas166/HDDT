@@ -295,6 +295,7 @@ namespace HDDT.App
         private void btnNotification_Click(object sender, EventArgs e)
         {
             this.btnNotification.BackgroundImage = Properties.Resources.bell;
+            _formNotification.Relocate(this);
             _formNotification.Show();
         }
     }

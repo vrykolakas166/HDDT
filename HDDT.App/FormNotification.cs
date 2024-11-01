@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HDDT.App
 {
@@ -48,14 +49,14 @@ namespace HDDT.App
         {
             InitializeComponent();
 
-            try { 
+            try { // just test on win 11
             var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
             var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
             DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
             }
             catch { }
 
-            Location = new Point(parent.Location.X + 30, parent.Location.Y + 200);
+            Relocate(parent);
             Size = new Size(200, 40);
         }
 
@@ -64,6 +65,11 @@ namespace HDDT.App
         private void FormNotification_Load(object sender, EventArgs e)
         {
             LoadNotification();
+        }
+
+        public void Relocate(Form parent)
+        {
+            Location = new Point(parent.Location.X + 30, parent.Location.Y + 200);
         }
 
         private void LoadNotification()
