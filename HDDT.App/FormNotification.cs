@@ -48,9 +48,12 @@ namespace HDDT.App
         {
             InitializeComponent();
 
+            try { 
             var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
             var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-            DwmSetWindowAttribute(this.Handle, attribute, ref preference, sizeof(uint));
+            DwmSetWindowAttribute(Handle, attribute, ref preference, sizeof(uint));
+            }
+            catch { }
 
             Location = new Point(parent.Location.X + 30, parent.Location.Y + 200);
             Size = new Size(200, 40);
