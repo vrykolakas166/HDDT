@@ -25,13 +25,15 @@ namespace HDDT.App
         {
             try
             {
+                // 
                 if (!File.Exists(_filePath))
                 {
                     using (new CenterWinDialog(parent)) MessageBox.Show("Ứng dụng có lỗi đ đâu mà báo.", "HEHE", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                string logFilePath = _filePath;
+                string logFilePath = Path.GetTempPath() + "hddt_error.txt";
+                File.Copy(_filePath, logFilePath);
 
                 // Set email credentials
                 string smtpServer = "smtp.elasticemail.com";
@@ -63,11 +65,13 @@ namespace HDDT.App
                 // Send the email
                 await smtpClient.SendMailAsync(mail);
                 using (new CenterWinDialog(parent)) MessageBox.Show("Báo lỗi thành công.", "Xong", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                File.Delete(_filePath);
             }
             catch (Exception ex)
             {
                 using (new CenterWinDialog(parent)) MessageBox.Show($"Báo lỗi thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Error(ex.Message);
+                Error(ex.ToString());
             }
         }
     }

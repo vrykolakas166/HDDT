@@ -172,6 +172,28 @@ namespace HDDT.App
             return dic;
         }
 
+        public static bool IsFileInUse(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    return false;
+                }
+
+                using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    // If we reach here, the file is not in use
+                    return false;
+                }
+            }
+            catch (IOException)
+            {
+                // If an IOException is thrown, the file is in use
+                return true;
+            }
+        }
+
         public static async Task DownloadExtensionAsync(Form parent = null)
         {
 
@@ -232,7 +254,7 @@ namespace HDDT.App
             catch (Exception ex)
             {
                 using (new CenterWinDialog(parent)) MessageBox.Show($"Tải công cụ thất bại, vui lòng liên hệ nhà phát triển", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MyLogger.Error(ex.Message);
+                MyLogger.Error(ex.ToString());
             }
         }
     }

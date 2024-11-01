@@ -190,8 +190,17 @@ namespace HDDT.App
         {
             try
             {
+                tsStatus.Text = "";
+
                 if (ValidateInput())
                 {
+                    var output = Path.GetDirectoryName(_templateFile.FullName) + "\\output.xlsx";
+                    if (Func.IsFileInUse(output))
+                    {
+                        using (new CenterWinDialog(this)) MessageBox.Show("Vui lòng đóng tệp excel trước.", "Output", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     Loading(true);
                     tsProgress.Maximum = 100;
                     _worker.RunWorkerAsync();
@@ -204,7 +213,7 @@ namespace HDDT.App
             catch (Exception ex)
             {
                 using (new CenterWinDialog(this)) MessageBox.Show("Vui lòng liên hệ nhà phát triển", "Lỗi không xác định", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                MyLogger.Error(ex.Message);
+                MyLogger.Error(ex.ToString());
             }
         }
 
@@ -229,6 +238,19 @@ namespace HDDT.App
             txtData.Font = new Font(regularFontFamily, 9.75F, FontStyle.Regular); // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             txtTemplate.Font = new Font(regularFontFamily, 9.75F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             Font = new Font(regularFontFamily, 8.25F, FontStyle.Regular);  // new System.Drawing.Font("SF Pro Text", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            try
+            {
+                if (File.Exists(Path.GetTempPath() + "hddt_error.txt"))
+                {
+                    File.Delete(Path.GetTempPath() + "hddt_error.txt");
+                }
+            }
+            catch{ }
+            base.OnClosed(e);
         }
     }
 }

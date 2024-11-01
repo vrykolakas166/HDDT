@@ -201,7 +201,7 @@ namespace HDDT.App
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Debug.WriteLine($"An error occurred: {ex.Message}");
             }
         }
     }

@@ -41,6 +41,7 @@ namespace HDDT.App
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +57,7 @@ namespace HDDT.App
             this.btnSelectTemplate = new System.Windows.Forms.Button();
             this.txtTemplate = new System.Windows.Forms.TextBox();
             this.lblVersion = new System.Windows.Forms.Label();
-            this.toolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -73,7 +74,7 @@ namespace HDDT.App
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(378, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(338, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -81,10 +82,18 @@ namespace HDDT.App
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolToolStripMenuItem,
+            this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.fileToolStripMenuItem.Text = "Tệp";
+            // 
+            // toolToolStripMenuItem
+            // 
+            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
+            this.toolToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toolToolStripMenuItem.Text = "Tải tiện ích";
+            this.toolToolStripMenuItem.Click += new System.EventHandler(this.toolToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -115,7 +124,7 @@ namespace HDDT.App
             this.statusStrip1.Location = new System.Drawing.Point(0, 225);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(378, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(338, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -134,10 +143,11 @@ namespace HDDT.App
             this.panel1.Controls.Add(this.btnRun);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
-            this.panel1.Location = new System.Drawing.Point(0, 40);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(378, 184);
+            this.panel1.Size = new System.Drawing.Size(338, 201);
             this.panel1.TabIndex = 2;
             // 
             // btnRun
@@ -146,7 +156,7 @@ namespace HDDT.App
             this.btnRun.Location = new System.Drawing.Point(13, 135);
             this.btnRun.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(360, 38);
+            this.btnRun.Size = new System.Drawing.Size(315, 38);
             this.btnRun.TabIndex = 2;
             this.btnRun.Text = "Tạo";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -161,7 +171,7 @@ namespace HDDT.App
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox2.Size = new System.Drawing.Size(378, 69);
+            this.groupBox2.Size = new System.Drawing.Size(338, 69);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Danh sách của từng hóa đơn";
@@ -171,9 +181,9 @@ namespace HDDT.App
             this.btnSelectData.Location = new System.Drawing.Point(285, 27);
             this.btnSelectData.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSelectData.Name = "btnSelectData";
-            this.btnSelectData.Size = new System.Drawing.Size(88, 23);
+            this.btnSelectData.Size = new System.Drawing.Size(43, 23);
             this.btnSelectData.TabIndex = 1;
-            this.btnSelectData.Text = "Chọn";
+            this.btnSelectData.Text = "...";
             this.btnSelectData.UseVisualStyleBackColor = true;
             this.btnSelectData.Click += new System.EventHandler(this.btnSelectData_Click);
             // 
@@ -186,6 +196,7 @@ namespace HDDT.App
             this.txtData.ReadOnly = true;
             this.txtData.Size = new System.Drawing.Size(264, 23);
             this.txtData.TabIndex = 0;
+            this.txtData.TabStop = false;
             // 
             // groupBox1
             // 
@@ -196,7 +207,7 @@ namespace HDDT.App
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Size = new System.Drawing.Size(378, 60);
+            this.groupBox1.Size = new System.Drawing.Size(338, 60);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Danh sách hóa đơn mẫu";
@@ -206,9 +217,9 @@ namespace HDDT.App
             this.btnSelectTemplate.Location = new System.Drawing.Point(285, 20);
             this.btnSelectTemplate.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnSelectTemplate.Name = "btnSelectTemplate";
-            this.btnSelectTemplate.Size = new System.Drawing.Size(88, 23);
+            this.btnSelectTemplate.Size = new System.Drawing.Size(43, 23);
             this.btnSelectTemplate.TabIndex = 1;
-            this.btnSelectTemplate.Text = "Chọn";
+            this.btnSelectTemplate.Text = "...";
             this.btnSelectTemplate.UseVisualStyleBackColor = true;
             this.btnSelectTemplate.Click += new System.EventHandler(this.btnSelectTemplate_Click);
             // 
@@ -221,28 +232,27 @@ namespace HDDT.App
             this.txtTemplate.ReadOnly = true;
             this.txtTemplate.Size = new System.Drawing.Size(264, 23);
             this.txtTemplate.TabIndex = 0;
+            this.txtTemplate.TabStop = false;
             // 
             // lblVersion
             // 
-            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblVersion.Location = new System.Drawing.Point(0, 24);
+            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblVersion.Location = new System.Drawing.Point(0, 212);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(378, 13);
+            this.lblVersion.Size = new System.Drawing.Size(338, 13);
             this.lblVersion.TabIndex = 3;
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // toolToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
-            this.toolToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.toolToolStripMenuItem.Text = "Công cụ";
-            this.toolToolStripMenuItem.Click += new System.EventHandler(this.toolToolStripMenuItem_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 247);
+            this.ClientSize = new System.Drawing.Size(338, 247);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
@@ -252,9 +262,10 @@ namespace HDDT.App
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(394, 286);
-            this.MinimumSize = new System.Drawing.Size(394, 286);
+            this.MaximumSize = new System.Drawing.Size(354, 286);
+            this.MinimumSize = new System.Drawing.Size(354, 286);
             this.Name = "FormMain";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tự động tạo hóa đơn";
             this.Load += new System.EventHandler(this.FormMain_Load);
@@ -329,6 +340,7 @@ namespace HDDT.App
         private System.Windows.Forms.ToolStripMenuItem reportErrorToolStripMenuItem;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.ToolStripMenuItem toolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
