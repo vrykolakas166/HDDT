@@ -142,7 +142,7 @@ function startClicking() {
     }
 
     function getMST(value) {
-      const regex = /(\d+-\d+)/g; // Use the global flag to find all matches
+      const regex = /(\d+-*\d+)/g; // Use the global flag to find all matches
 
       const matches = value.match(regex);
 
